@@ -19,7 +19,7 @@ class Test(BaseTest):
         local_url = [LocalWeb.FIREFOX_TEST_SITE, LocalWeb.FIREFOX_TEST_SITE_2, LocalWeb.FOCUS_TEST_SITE,
                      LocalWeb.FOCUS_TEST_SITE_2, LocalWeb.MOZILLA_TEST_SITE, LocalWeb.POCKET_TEST_SITE]
         website_image_pattern = [LocalWeb.FIREFOX_LOGO, LocalWeb.FIREFOX_LOGO, LocalWeb.FOCUS_LOGO,
-                                   LocalWeb.FOCUS_LOGO, LocalWeb.MOZILLA_LOGO, LocalWeb.POCKET_LOGO]
+                                 LocalWeb.FOCUS_LOGO, LocalWeb.MOZILLA_LOGO, LocalWeb.POCKET_LOGO]
         history_menu_bar_pattern = Pattern('history_menu_bar.png')
         recently_closed_pattern = Pattern('recently_closed_tabs.png')
         tabs_list_pattern = Pattern('tabs_list.png')
@@ -35,20 +35,30 @@ class Test(BaseTest):
         [close_tab() for _ in range(5)]
         one_tab_exists = exists(website_image_pattern[0], 20)
         assert_true(self, one_tab_exists,
-                    'One opened tab left. All 5 tabs were successfully closed.')
-        type(Key.ALT)
-        history_menu_bar_exists = exists(history_menu_bar_pattern, 20)
-        assert_true(self, history_menu_bar_exists,
-                    'History menu bar is visible.')
-        click(history_menu_bar_pattern, 0.2)
+                    'One opened tab left. '
+                    'All 5 tabs were successfully closed.')
+        # show menu bar
+        key_down(Key.ALT)
+        time.sleep(DEFAULT_UI_DELAY)
+        key_up(Key.ALT)
+        if Settings.get_os() == Platform.MAC:  # menu bar background may have transparency on MAC
+            type(Key.F2, KeyModifier.CTRL)
+            [type(Key.RIGHT) for _ in range(5)]
+            type(Key.ENTER)
+        else:
+            history_menu_bar_exists = exists(history_menu_bar_pattern, 20)
+            assert_true(self, history_menu_bar_exists,
+                        'History menu bar is visible.')
+            click(history_menu_bar_pattern, 0.2)
         recently_closed_menu = exists(recently_closed_pattern, 20)
         assert_true(self, recently_closed_menu,
-                    'Recently Closed Tabs option exists.')
-        hover(recently_closed_pattern, 0.2)  # hover doesn't open popup list
+                    'The History\'s button context menu is opened. '
+                    'Recently Closed Tabs is visible.')
         click(recently_closed_pattern)
         tabs_list_exists = exists(tabs_list_pattern, 20)
         assert_true(self, tabs_list_exists,
-                    'Previously Opened Tabs list exists.')
+                    'Previously Opened Tabs list exists. '
+                    'A new menu is displayed containing the recently closed tabs')
         click(restore_tabs_pattern, 0.2)
         #  check if all tabs reopened correctly
         tabs_count = len(website_image_pattern)
@@ -56,7 +66,7 @@ class Test(BaseTest):
             if len(website_image_pattern) == 1:
                 one_tab_left = exists(website_image_pattern[0], 20)
                 assert_true(self, one_tab_left,
-                            'All {0} tabs were successfully reopened.'
+                            'All {0} closed tabs are successfully reopened.'
                             .format(tabs_count - 1))
             else:
                 tab_exists = exists(website_image_pattern.pop())
