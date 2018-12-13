@@ -16,7 +16,6 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        private_browsing_pattern = Pattern('private_browsing_icon.png')
         change_master_password_popup_pattern = Pattern('change_master_password_popup.png')
         preferences_privacy_find_field_pattern = Pattern('preferences_privacy_find_field.png').similar(0.6)
         master_password_box_is_checked_pattern = Pattern('master_password_box_is_checked.png')
@@ -28,10 +27,9 @@ class Test(BaseTest):
         remove_button_available_in_change_master_password_pattern = \
             Pattern('remove_button_available_in_change_master_password_pattern.png')
         master_password_deleted_pattern = Pattern('master_password_deleted.png')
-        new_tab_pattern = Pattern('new_tab_label.png')
 
         new_private_window()
-        private_window_is_loaded = exists(private_browsing_pattern, 20)
+        private_window_is_loaded = exists(PrivateWindow.private_window_pattern, 20)
         assert_true(self, private_window_is_loaded,
                     'Private windows is loaded')
 
@@ -77,7 +75,7 @@ class Test(BaseTest):
 
         #  enter normal mode
         new_tab()
-        new_tab_is_opened = exists(new_tab_pattern, 20)
+        new_tab_is_opened = exists(Tabs.NEW_TAB_HIGHLIGHTED, 20)
         assert_true(self, new_tab_is_opened,
                     'New tab is opened')
 
