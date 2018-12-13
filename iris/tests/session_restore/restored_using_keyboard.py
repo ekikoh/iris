@@ -20,7 +20,7 @@ class Test(BaseTest):
                      LocalWeb.FOCUS_TEST_SITE_2, LocalWeb.MOZILLA_TEST_SITE]
         local_url_logo_pattern = [LocalWeb.FIREFOX_LOGO, LocalWeb.FIREFOX_LOGO, LocalWeb.FOCUS_LOGO,
                                   LocalWeb.FOCUS_LOGO, LocalWeb.MOZILLA_LOGO]
-        opened_tabs = 0
+
         for _ in range(5):
             new_tab()
             navigate(local_url[_])
@@ -28,15 +28,17 @@ class Test(BaseTest):
             assert_true(self, website_loaded,
                         'Website {0} loaded'
                         .format(_ + 1))
-            opened_tabs += 1
+
         [close_tab() for _ in range(4)]
+
         one_tab_exists = exists(local_url_logo_pattern[0], 20)
         assert_true(self, one_tab_exists,
                     'One opened tab left. {0} tabs were successfully closed.'
-                    .format(opened_tabs - 1))
+                    .format(len(local_url) - 1))
+
         for _ in range(4):
             undo_close_tab()
-            tab_is_restored = exists(local_url_logo_pattern[_+1])  # +1 as the first url logo is one opened tab
+            tab_is_restored = exists(local_url_logo_pattern[_+1])  # +1 as url[0] is one opened tab
             assert_true(self, tab_is_restored,
                         'Tab {0} successfully restored'
                         .format(_ + 2))
