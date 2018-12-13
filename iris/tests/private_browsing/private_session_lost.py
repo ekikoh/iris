@@ -29,11 +29,7 @@ class Test(BaseTest):
         assert_true(self, browser_console_opened,
                     'Browser Console is successfully opened. Browser Console is in focus. Restarting Firefox.')
 
-        if Settings.get_os() == Platform.MAC:
-            type(text='r', modifier=KeyModifier.CMD + KeyModifier.ALT)
-        else:
-            type(text='r', modifier=KeyModifier.CTRL + KeyModifier.ALT)
-
+        restart_via_console()
         wait_for_firefox_restart()
 
         try:
@@ -46,14 +42,12 @@ class Test(BaseTest):
         browser_console_active = exists(browser_console_title_pattern, 40)
         assert_true(self, browser_console_active,
                     'Browser Console is active. Closing Browser Console.')
-        if Settings.get_os() == Platform.MAC:
-            type(text='w', modifier=KeyModifier.CMD)
-        else:
-            type(text=Key.F4, modifier=KeyModifier.ALT)
+
+        close_tab()
 
         try:
             browser_console_closed = wait_vanish(browser_console_title_pattern, 20)
             assert_true(self, browser_console_closed,
-                        'Exiting test. Browser console was closed successfully.')
+                        'Browser console was closed successfully.')
         except FindError:
             raise FindError('Browser console was not closed.')
