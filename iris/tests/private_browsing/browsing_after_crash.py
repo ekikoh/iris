@@ -16,14 +16,8 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
-        soap_label_pattern = Pattern('soap_label.png')
-        private_browsing_icon_pattern = Pattern('private_browsing_icon.png')
-        preference_name_label_pattern = Pattern('preference_name_label.png')
-        devtools_label_pattern = Pattern('devtools_regular_label.png')
-        run_button_pattern = Pattern('run_button.png')
         restart_firefox_button_pattern = Pattern('restart_firefox_button.png')
         soap_wikipedia_header_label_pattern = Pattern('soap_wikipedia_header_label.png')
-        accept_the_risk_button_pattern = Pattern('accept_the_risk_button.png')
 
         restart_firefox(self,
                         self.browser.path,
@@ -33,42 +27,14 @@ class Test(BaseTest):
                         show_crash_reporter=True)
 
         new_private_window()
-        private_browsing_window_opened = exists(private_browsing_icon_pattern, 5)
+        private_browsing_window_opened = exists(PrivateWindow.private_window_pattern, 5)
         assert_true(self, private_browsing_window_opened, 'Private Browsing Window opened')
 
-        navigate(LocalWeb.WIKI_TEST_SITE)
-        soap_label_exists = exists(soap_label_pattern, 20)
+        navigate(LocalWeb.SOAP_WIKI_TEST_SITE)
+        soap_label_exists = exists(LocalWeb.SOAP_WIKI_SOAP_LABEL, 20)
         assert_true(self, soap_label_exists, 'The page is successfully loaded.')
 
-        # crash firefox
-
-        new_tab()
-        navigate('about:config')
-
-        accept_the_risk_button_exists = exists(accept_the_risk_button_pattern, 5)
-        assert_true(self, accept_the_risk_button_exists, 'Accept the risk button exists.')
-
-        click(accept_the_risk_button_pattern)
-
-        preference_name_label_exists = exists(preference_name_label_pattern, 5)
-        assert_true(self, preference_name_label_exists, 'Settings is opened.')
-
-        paste('devtools.chrome.enabled')
-
-        devtools_label_exists = exists(devtools_label_pattern, 20)
-        assert_true(self, devtools_label_exists, 'Devtools exists.')
-
-        hover(devtools_label_pattern)
-        double_click(devtools_label_pattern)
-
-        type(Key.F4, KeyModifier.SHIFT)
-
-        scratchpad_opened = exists(run_button_pattern, 5)
-        assert_true(self, scratchpad_opened, 'Scratchpad opened.')
-
-        paste('Cu.import("resource://gre/modules/ctypes.jsm");let zero = new ctypes.intptr_t(8); let badptr = '
-              'ctypes.cast(zero, ctypes.PointerType(ctypes.int32_t)); badptr.contents;')
-        click(run_button_pattern)
+        navigate('about:crashparent')
 
         if Settings.is_windows():
             crash_reporter_icon_pattern = Pattern('crash_reporter_icon.png')
