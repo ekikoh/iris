@@ -13,70 +13,12 @@ class Test(BaseTest):
         self.test_suite_id = '68'
         self.locales = ['en-US']
 
-    def setup(self):
-        """Test case setup
 
-        This overrides the setup method in the BaseTest class, so that it can use a brand new profile.
-        """
-        BaseTest.setup(self)
-        self.profile = Profile.LIKE_NEW
-
-        return
-
-        '''
-        "1        Launch Firefox with a clean profile.        
-        Expected result: Firefox starts successfully.
-        
-        2        Access the about:config page.        
-        Expected result: The about:config page is successfully displayed.
-        
-        3        Set browser.sessionstore.resume_session_once to true.        
-        Expected result: The pref is successfully changed.
-        
-        4        Open several websites in different tabs and then close Firefox.        
-        Expected result: No issues are encountered while performing this action.
-        Firefox successfully closes.
-        
-        5        Launch Firefox with the same profile.        
-        Expected result: 
-        - Firefox launches successfully.
-        - The previously opened tabs are display without issues.
-        
-        6        Close Firefox.        
-        Expected result: Firefox successfully closes.
-        
-        7        Launch Firefox with the same profile.        
-        Expected result: 
-        - Firefox launches successfully. 
-        - The previously opened tabs are not displayed/restored."
-        '''
     def run(self):
         url_first = LocalWeb.FIREFOX_TEST_SITE
         url_second = LocalWeb.FIREFOX_TEST_SITE_2
-        accept_risk_pattern = Pattern('accept_risk.png')
-        false_value_no_highlight_pattern = Pattern('false_value_no_highlight.png')
-        true_value_highlight_pattern = Pattern('true_value_highlight.png')
 
-        navigate('about:config')
-        accept_risk_button_exists = exists(accept_risk_pattern, 20)
-        assert_true(self, accept_risk_button_exists,
-                    'Accept risk button exists')
-        click(accept_risk_pattern, 0.2)
-        region = Region(0, 0, SCREEN_WIDTH, 2 * SCREEN_HEIGHT / 3)
-        about_config_page_loaded = region.exists(false_value_no_highlight_pattern, 10)
-        assert_true(self, about_config_page_loaded,
-                    'The \'about:config\' page successfully loaded.')
-
-        paste('browser.sessionstore.resume_session_once')
-        type(Key.ENTER)
-        default_value_exists = region.exists(false_value_no_highlight_pattern, 20)
-        assert_true(self, default_value_exists,
-                    'The \'browser.sessionstore.resume_session_once\' preference has value \'false\' by default.')
-        double_click(false_value_no_highlight_pattern)
-        true_value_highlight = region.exists(true_value_highlight_pattern, 10)
-        assert_true(self, true_value_highlight,
-                    'The \'browser.sessionstore.resume_session_once\' preference has value \'true\' after the '
-                    'preference has changed.')
+        change_preference('browser.sessionstore.resume_session_once', 'true')
 
         new_tab()
         navigate(url_first)
