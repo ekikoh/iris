@@ -26,23 +26,29 @@ class Test(BaseTest):
         first_website_loaded = exists(logo_patterns[0], 20)
         assert_true(self, first_website_loaded,
                     'First tab is successfully loaded.')
+
         new_tab()
         navigate(test_urls[1])
         second_website_loaded = exists(logo_patterns[1], 20)
         assert_true(self, second_website_loaded,
                     'Second tab is successfully loaded.')
+
         close_tab()
         try:
             second_tab_closed = wait_vanish(logo_patterns[1], 3)
-            assert_true(self, second_tab_closed, 'Second tab successfully closed.')
+            assert_true(self, second_tab_closed,
+                        'Second tab successfully closed.')
         except FindError:
             raise FindError('Second tab is still open')
         first_tab_is_active = exists(firefox_local_tab_pattern, 20)
-        assert_true(self, first_tab_is_active, 'First tab is active.')
+        assert_true(self, first_tab_is_active,
+                    'First tab is active.')
+
         right_click(firefox_local_tab_pattern, 0.2)
         context_menu_exists = exists(undo_close_tab_pattern, 20)
         assert_true(self, context_menu_exists,
                     'Undo Close Tab option exists.')
+
         click(undo_close_tab_pattern, 0.2)
         second_website_loaded = exists(logo_patterns[1], 20)
         assert_true(self, second_website_loaded,
