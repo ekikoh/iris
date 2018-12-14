@@ -32,15 +32,19 @@ class Test(BaseTest):
             assert_true(self, website_loaded,
                         'Website {0} loaded'
                         .format(_+1))
+
         [close_tab() for _ in range(5)]
+
         one_tab_exists = exists(website_image_pattern[0], 20)
         assert_true(self, one_tab_exists,
                     'One opened tab left. '
                     'All 5 tabs were successfully closed.')
+
         # show menu bar
         key_down(Key.ALT)
-        time.sleep(DEFAULT_UI_DELAY)
+        time.sleep(DEFAULT_UI_DELAY) # time sleep for Linux
         key_up(Key.ALT)
+
         if Settings.get_os() == Platform.MAC:  # menu bar background may have transparency on MAC
             type(Key.F2, KeyModifier.CTRL)
             [type(Key.RIGHT) for _ in range(5)]
@@ -50,15 +54,18 @@ class Test(BaseTest):
             assert_true(self, history_menu_bar_exists,
                         'History menu bar is visible.')
             click(history_menu_bar_pattern, 0.2)
+
         recently_closed_menu = exists(recently_closed_pattern, 20)
         assert_true(self, recently_closed_menu,
                     'The History\'s button context menu is opened. '
                     'Recently Closed Tabs is visible.')
+
         click(recently_closed_pattern)
         tabs_list_exists = exists(tabs_list_pattern, 20)
         assert_true(self, tabs_list_exists,
                     'Previously Opened Tabs list exists. '
                     'A new menu is displayed containing the recently closed tabs')
+
         click(restore_tabs_pattern, 0.2)
         #  check if all tabs reopened correctly
         tabs_count = len(website_image_pattern)
