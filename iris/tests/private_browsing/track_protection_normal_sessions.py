@@ -16,12 +16,12 @@ class Test(BaseTest):
         self.locales = ['en-US']
 
     def run(self):
+        always_block_trackers_not_selected_pattern = \
+            AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_NOT_SELECTED
+        privacy_and_security_tab_pattern = AboutPreferences.PRIVACY_AND_SECURITY_BUTTON_SELECTED
+        tracking_protection_shield_pattern = LocationBar.TRACKING_PROTECTION_SHIELD_ACTIVATED
         privacy_prefs_page_pattern = Pattern('about_preferences_privacy_address.png')
-        always_block_trackers_not_selected_pattern = Pattern('always_block_trackers_not_selected.png')
-        always_block_trackers_selected_pattern = Pattern('always_block_trackers_not_selected.png')
-        privacy_and_security_tab_pattern = Pattern('privacy_and_security_tab.png')
         cnn_site_logo_pattern = Pattern('cnn_logo.png')
-        tracking_protection_shield_pattern = Pattern('tracking_protection_shield.png')
 
         # Access the about:preferences#privacy page
         navigate('about:preferences#privacy')
@@ -41,7 +41,8 @@ class Test(BaseTest):
         else:
             raise FindError('Can not find "Privacy and Security" tab')
 
-        always_block_trackers_selected_displayed = exists(always_block_trackers_selected_pattern, 3)
+        always_block_trackers_selected_displayed = \
+            exists(AboutPreferences.Privacy.CONTENT_TRACKING_TRACKERS_ALWAYS_RADIO_SELECTED, 3)
         assert_true(self, always_block_trackers_selected_displayed,
                     '"Always" option from the Tracking Protection section is enabled')
 
