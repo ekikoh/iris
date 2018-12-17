@@ -4,6 +4,7 @@
 
 from iris.test_case import *
 
+
 class Test(BaseTest):
 
     def __init__(self):
@@ -12,7 +13,6 @@ class Test(BaseTest):
         self.test_case_id = '115423'
         self.test_suite_id = '68'
         self.locales = ['en-US']
-
 
     def run(self):
         url_first = LocalWeb.FIREFOX_TEST_SITE
@@ -23,13 +23,12 @@ class Test(BaseTest):
         new_tab()
         navigate(url_first)
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_one_loaded,
-                    'Page 1 successfully loaded, firefox logo found.')
+        assert_true(self, website_one_loaded, 'Page 1 successfully loaded, firefox logo found.')
+
         new_tab()
         navigate(url_second)
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_two_loaded,
-                    'Page 2 successfully loaded, firefox logo found.')
+        assert_true(self, website_two_loaded, 'Page 2 successfully loaded, firefox logo found.')
 
         restart_firefox(self,
                         self.browser.path,
@@ -38,12 +37,11 @@ class Test(BaseTest):
 
         previous_tab()
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_one_loaded,
-                    'Page 1 successfully loaded after restart.')
+        assert_true(self, website_one_loaded, 'Page 1 successfully loaded after restart.')
+
         previous_tab()
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_two_loaded,
-                    'Page 2 successfully loaded after restart.')
+        assert_true(self, website_two_loaded, 'Page 2 successfully loaded after restart.')
         restart_firefox(self,
                         self.browser.path,
                         self.profile_path,
@@ -51,9 +49,8 @@ class Test(BaseTest):
 
         previous_tab()
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 1)
-        assert_false(self, website_one_loaded,
-                    'Page 1 was not loaded after second restart.')
+        assert_false(self, website_one_loaded, 'Page 1 was not loaded after second restart.')
+
         previous_tab()
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, 1)
-        assert_false(self, website_two_loaded,
-                    'Page 2 was not loaded after second restart.')
+        assert_false(self, website_two_loaded, 'Page 2 was not loaded after second restart.')
