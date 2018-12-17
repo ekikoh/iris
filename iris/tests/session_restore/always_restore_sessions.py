@@ -28,20 +28,17 @@ class Test(BaseTest):
 
         click(restore_previous_session_unchecked_pattern)
         checkbox_restore_previous_session_checked = exists(restore_previous_session_checked_pattern)
-        assert_true(self, checkbox_restore_previous_session_checked,
-                    '"Restore previous session" enabled.')
+        assert_true(self, checkbox_restore_previous_session_checked, '"Restore previous session" enabled.')
 
         new_tab()
         navigate(url_first)
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_one_loaded,
-                    'Page 1 successfully loaded, firefox logo found.')
+        assert_true(self, website_one_loaded, 'Page 1 successfully loaded, firefox logo found.')
 
         new_tab()
         navigate(url_second)
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_two_loaded,
-                    'Page 2 successfully loaded, firefox logo found.')
+        assert_true(self, website_two_loaded, 'Page 2 successfully loaded, firefox logo found.')
 
         restart_firefox(self,
                         self.browser.path,
@@ -50,20 +47,16 @@ class Test(BaseTest):
 
         next_tab()
         checkbox_restore_previous_session_checked = exists(restore_previous_session_checked_pattern)
-        assert_true(self, checkbox_restore_previous_session_checked,
-                    '"Restore previous session" checked.')
+        assert_true(self, checkbox_restore_previous_session_checked, '"Restore previous session" checked.')
 
         click(restore_previous_session_checked_pattern)
         restore_previous_session_unchecked_exists = exists(restore_previous_session_unchecked_pattern, 20)
-        assert_true(self, restore_previous_session_unchecked_exists,
-                    '"Restore previous session" is unchecked.')
+        assert_true(self, restore_previous_session_unchecked_exists, '"Restore previous session" is unchecked.')
 
         close_tab()
         website_one_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_one_loaded,
-                    'Page 1 successfully loaded after restart.')
+        assert_true(self, website_one_loaded, 'Page 1 successfully loaded after restart.')
 
         next_tab()
         website_two_loaded = exists(LocalWeb.FIREFOX_LOGO, 10)
-        assert_true(self, website_two_loaded,
-                    'Page 2 successfully loaded after restart.')
+        assert_true(self, website_two_loaded, 'Page 2 successfully loaded after restart.')
